@@ -39,4 +39,4 @@ RUN ./configure
 RUN make
 RUN make install
 RUN echo 'extension=tideways_xhprof.so' >> /usr/local/etc/php/conf.d/tideways.ini
-RUN echo 'tideways.auto_prepend_library=0' >> /usr/local/etc/php/conf.d/tideways.ini
+#RUN echo 'tideways.auto_prepend_library=0' >> /usr/local/etc/php/conf.d/tideways.ini
