@@ -25,8 +25,18 @@ RUN ./composer.phar install
 
 #COPY --chown=isucon:isucon ./ /home/isucon/webapp/php/
 
-#RUN git clone https://github.com/tideways/php-xhprof-extension.git -b v5.0.4
-#WORKDIR /tmp/php-xhprof-extension
-#RUN phpize && ./configure && make
-#RUN make install
-#RUN echo 'extension=tideways_xhprof.so' >> /usr/local/etc/php/conf.d/tideways_xhprof.ini
+FROM php:7.3-apache
+
+RUN apt -y update
+RUN apt install -y \
+    git
+
+WORKDIR /root/
+RUN git clone https://github.com/tideways/php-profiler-extension.git
+WORKDIR /root/php-profiler-extension
+RUN phpize
+RUN ./configure
+RUN make
+RUN make install
+RUN echo 'extension=tideways_xhprof.so' >> /usr/local/etc/php/conf.d/tideways.ini
+RUN echo 'tideways.auto_prepend_library=0' >> /usr/local/etc/php/conf.d/tideways.ini
