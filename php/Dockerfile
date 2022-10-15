@@ -3,7 +3,7 @@ FROM php:8.1.8-fpm-bullseye
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
   apt-get -y upgrade && \
-  apt-get install -y wget make libzip-dev unzip sqlite3 procps && \
+  apt-get install -y wget make libzip-dev unzip sqlite3 procps git && \
   wget -q https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb && \
   apt-get -y install ./mysql-apt-config_*_all.deb && \
   apt-get -y update && \
@@ -28,8 +28,6 @@ RUN ./composer.phar install
 FROM php:7.3-apache
 
 RUN apt -y update
-RUN apt install -y \
-    git
 
 WORKDIR /root/
 RUN git clone https://github.com/tideways/php-profiler-extension.git
