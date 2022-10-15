@@ -25,12 +25,6 @@ RUN ./composer.phar install
 
 #COPY --chown=isucon:isucon ./ /home/isucon/webapp/php/
 
-FROM php:7.3-apache
-
-RUN apt -y update
-RUN apt install -y \
-    git
-
 #WORKDIR /root/
 #RUN git clone https://github.com/tideways/php-profiler-extension.git
 #WORKDIR /root/php-profiler-extension
