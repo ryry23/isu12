@@ -25,9 +25,9 @@ RUN ./composer.phar install
 
 #COPY --chown=isucon:isucon ./ /home/isucon/webapp/php/
 
-WORKDIR /root/
+WORKDIR /tmp/
 RUN git clone https://github.com/tideways/php-profiler-extension.git
-WORKDIR /root/php-profiler-extension
+WORKDIR /tmp/php-profiler-extension
 RUN phpize
 RUN ./configure
 RUN make
