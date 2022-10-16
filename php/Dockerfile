@@ -16,14 +16,14 @@ RUN docker-php-ext-configure zip && \
   docker-php-ext-install pdo_mysql
 
 WORKDIR /tmp/
-RUN git clone https://github.com/tideways/php-profiler-extension.git
-WORKDIR /tmp/php-profiler-extension
-RUN phpize
-RUN ./configure
-RUN make
-RUN make install
-#RUN echo 'extension=tideways_xhprof.so' >> /usr/local/etc/php/conf.d/tideways.ini
-#RUN echo 'tideways.auto_prepend_library=0' >> /usr/local/etc/php/conf.d/tideways.ini
+#RUN git clone https://github.com/tideways/php-profiler-extension.git && \
+#WORKDIR /tmp/php-profiler-extension && \
+#phpize && ./configure &&make && make install
+
+RUN wget https://go.dev/dl/go1.19.2.linux-amd64.tar.gz && tar -xf go1.19.2.linux-amd64.tar.gz && mv -v go /usr/local
+RUN echo -e "export GOPATH=$HOME/go\nexport PATH=$PATH:/usr/local/go/bin:$GOPATH/bin\n/home/$USER/code/golang" >> /etc/bash.bashrc
+RUN source /etc/bash.bashrc
+RUN go install github.com/tideways/toolkit@latest
 
 RUN useradd --uid=1001 --create-home isucon
 USER isucon
