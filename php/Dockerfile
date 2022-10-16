@@ -23,7 +23,7 @@ WORKDIR /tmp/
 RUN wget https://go.dev/dl/go1.19.2.linux-amd64.tar.gz && tar -xf go1.19.2.linux-amd64.tar.gz && mv -v go /usr/local
 RUN echo "export GOPATH=$HOME/go" >> /etc/bash.bashrc
 RUN echo "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin" >> /etc/bash.bashrc
-#RUN source /etc/bash.bashrc
+RUN source /etc/bash.bashrc
 #RUN go install github.com/tideways/toolkit@latest
 
 RUN useradd --uid=1001 --create-home isucon
