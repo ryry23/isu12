@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 
 return function (App $app) {
+    tideways_xhprof_enable(TIDEWAYS_XHPROF_FLAGS_MEMORY | TIDEWAYS_XHPROF_FLAGS_CPU);
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
@@ -39,4 +40,10 @@ return function (App $app) {
 
     // ベンチマーカー向けAPI
     $app->post('/initialize', Handlers::class . ':initializeHandler');
+
+
+    file_put_contents(
+        '/home/isucon/tmp/php/' . DIRECTORY_SEPARATOR . uniqid() . '.myapplication.xhprof',
+        serialize(tideways_xhprof_disable())
+    );
 };
