@@ -21,9 +21,9 @@ WORKDIR /tmp/
 #phpize && ./configure &&make && make install
 
 RUN wget https://go.dev/dl/go1.19.2.linux-amd64.tar.gz && tar -xf go1.19.2.linux-amd64.tar.gz && mv -v go /usr/local
-RUN echo -e "export GOPATH=$HOME/go\nexport PATH=$PATH:/usr/local/go/bin:$GOPATH/bin\n/home/$USER/code/golang" >> /etc/bash.bashrc
-RUN source /etc/bash.bashrc
-RUN go install github.com/tideways/toolkit@latest
+RUN echo -e "export GOPATH=$HOME/go\nexport PATH=$PATH:/usr/local/go/bin:$GOPATH/bin" >> /etc/bash.bashrc
+#RUN source /etc/bash.bashrc
+#RUN go install github.com/tideways/toolkit@latest
 
 RUN useradd --uid=1001 --create-home isucon
 USER isucon
