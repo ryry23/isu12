@@ -15,5 +15,5 @@ services:
       - /home/isucon/initial_data:/home/isucon/initial_data
       - /home/isucon/tmp:/home/isucon/tmp
       - /home/isucon/webapp/php:/home/isucon/webapp/php
-      - /home/isucon/webapp/php_conf/php.ini:/usr/local/php/etc/php.ini
+      - /home/isucon/webapp/php_conf/php.ini:/usr/local/etc/php/php.ini
     init: true
