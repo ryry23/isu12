@@ -23,7 +23,7 @@ RUN docker-php-ext-configure zip && \
 RUN mkdir /tmp/xhprof
 COPY xhprof/* /tmp/xhprof
 WORKDIR /tmp/xhprof/extension/
-RUN /usr/local/bin/phpize && ./configure && ./configure --with-php-config=/usr/local/bin/php-config && make && make install
+#RUN /usr/local/bin/phpize && ./configure && ./configure --with-php-config=/usr/local/bin/php-config && make && make install
 
 RUN useradd --uid=1001 --create-home isucon
 USER isucon
