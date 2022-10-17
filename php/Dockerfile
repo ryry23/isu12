@@ -15,13 +15,13 @@ RUN docker-php-ext-configure zip && \
   docker-php-ext-install zip && \
   docker-php-ext-install pdo_mysql
 
-WORKDIR /tmp/
+WORKDIR /home/isucon/tmp/php/
 #RUN git clone https://github.com/tideways/php-profiler-extension.git
 #WORKDIR /tmp/php-profiler-extension
 #RUN phpize && ./configure &&make && make install && make && make install
 
 RUN git clone https://github.com/longxinH/xhprof.git ./xhprof
-WORKDIR /tmp/xhprof/extension/
+WORKDIR /home/isucon/tmp/php/xhprof/extension/
 RUN /usr/local/bin/phpize && ./configure && ./configure --with-php-config=/usr/local/bin/php-config && make && make install
 
 RUN useradd --uid=1001 --create-home isucon
