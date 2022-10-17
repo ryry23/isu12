@@ -16,9 +16,9 @@ RUN docker-php-ext-configure zip && \
   docker-php-ext-install pdo_mysql
 
 WORKDIR /tmp/
-RUN git clone https://github.com/tideways/php-profiler-extension.git && \
-WORKDIR /tmp/php-profiler-extension && \
-phpize && ./configure &&make && make install
+RUN git clone https://github.com/tideways/php-profiler-extension.git
+WORKDIR /tmp/php-profiler-extension
+RUN phpize && ./configure &&make && make install
 
 #RUN wget https://go.dev/dl/go1.19.2.linux-amd64.tar.gz && tar -xf go1.19.2.linux-amd64.tar.gz && mv -v go /usr/local
 #RUN echo "export GOPATH=$HOME/go" >> /etc/bash.bashrc
