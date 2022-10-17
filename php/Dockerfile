@@ -15,7 +15,7 @@ RUN docker-php-ext-configure zip && \
   docker-php-ext-install zip && \
   docker-php-ext-install pdo_mysql
 
-WORKDIR /home/isucon/tmp/php/
+#WORKDIR /tmp
 #RUN git clone https://github.com/tideways/php-profiler-extension.git
 #WORKDIR /tmp/php-profiler-extension
 #RUN phpize && ./configure &&make && make install && make && make install
