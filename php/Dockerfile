@@ -20,7 +20,7 @@ WORKDIR /home/isucon/tmp/php/
 #WORKDIR /tmp/php-profiler-extension
 #RUN phpize && ./configure &&make && make install && make && make install
 
-COPY xhprof/* /tmp/
+COPY xhprof/* /tmp/xhprof
 WORKDIR /tmp/xhprof/extension/
 RUN /usr/local/bin/phpize && ./configure && ./configure --with-php-config=/usr/local/bin/php-config && make && make install
 
