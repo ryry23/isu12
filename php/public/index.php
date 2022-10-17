@@ -10,7 +10,7 @@ use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
 
-tideways_xhprof_enable(TIDEWAYS_XHPROF_FLAGS_MEMORY | TIDEWAYS_XHPROF_FLAGS_CPU);
+xhprof_enable(XHPROF_FLAGS_NO_BUILTINS | XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
 
 require __DIR__ . '/../vendor/autoload.php';
 error_reporting(E_ALL);
@@ -88,5 +88,5 @@ $responseEmitter->emit($response);
 
 file_put_contents(
     '/home/isucon/tmp/php/' . DIRECTORY_SEPARATOR . uniqid() . '.myapplication.xhprof',
-    serialize(tideways_xhprof_disable())
+    serialize(xhprof_disable())
 );
