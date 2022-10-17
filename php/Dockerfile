@@ -22,7 +22,7 @@ WORKDIR /tmp/
 
 RUN git clone https://github.com/longxinH/xhprof.git ./xhprof
 WORKDIR /tmp/xhprof/extension/
-RUN /usr/local/bin/phpize && ./configure && ./configure --with-php-config=/usr/local/bin/php-config
+RUN /usr/local/bin/phpize && ./configure && ./configure --with-php-config=/usr/local/bin/php-config && make && make install
 
 RUN useradd --uid=1001 --create-home isucon
 USER isucon
