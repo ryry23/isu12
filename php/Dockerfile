@@ -20,8 +20,8 @@ WORKDIR /home/isucon/tmp/php/
 #WORKDIR /tmp/php-profiler-extension
 #RUN phpize && ./configure &&make && make install && make && make install
 
-RUN git clone https://github.com/longxinH/xhprof.git ./xhprof
-WORKDIR /home/isucon/tmp/php/xhprof/extension/
+COPY /home/isucon/tmp/xhprof/* /tmp
+WORKDIR /tmp/xhprof/extension/
 RUN /usr/local/bin/phpize && ./configure && ./configure --with-php-config=/usr/local/bin/php-config && make && make install
 
 RUN useradd --uid=1001 --create-home isucon
