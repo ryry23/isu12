@@ -954,10 +954,7 @@ class Handlers
             throw new RuntimeException(sprintf('error Select tenant: id=%d', $v->tenantID));
         }
 
-        #$existRecord = $this->adminDB->prepare('SELECT count(1) FROM visit_history WHERE player_id = ? AND tenant_id = ? AND competition_id = ?')
-        #    ->executeQuery([$v->playerID, $tenant['id'], $competitionID])
-        #    ->fetchAllNumeric();
-        #if ($existRecord) {
+
         try {
             $this->adminDB->prepare('INSERT INTO visit_history (player_id, tenant_id, competition_id, created_at) VALUES (?, ?, ?, ?)')
                 ->executeStatement([$v->playerID, $tenant['id'], $competitionID, $now]);
@@ -966,8 +963,6 @@ class Handlers
                 throw $exception;
             }
         }
-
-        #}
 
         $rankAfter = 0;
         $rankAfterStr = $request->getQueryParams()['rank_after'] ?? '';
