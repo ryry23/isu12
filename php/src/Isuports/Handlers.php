@@ -366,6 +366,13 @@ class Handlers
         return preg_match(self::TENANT_NAME_REGEXP, $name) === 1;
     }
 
+    private function getVisitHisotries(int $tenantID, string $competitionId): array
+    {
+        return $this->adminDB->prepare('SELECT player_id, created_at AS min_created_at FROM visit_history WHERE tenant_id = ? AND competition_id = ?')
+        ->executeQuery([$tenantID, $competitionId])
+        ->fetchAllAssociative();
+    }
+
     /**
      * 大会ごとの課金レポートを計算する
      */
@@ -377,9 +384,7 @@ class Handlers
         }
 
         // ランキングにアクセスした参加者のIDを取得する
-        $vhs = $this->adminDB->prepare('SELECT player_id, created_at AS min_created_at FROM visit_history WHERE tenant_id = ? AND competition_id = ?')
-            ->executeQuery([$tenantID, $comp->id])
-            ->fetchAllAssociative();
+        $vhs = $this->getVisitHisotries($tenantID, $comp->id);
 
         /** @var array<string, string> $billingMap */
         $billingMap = [];
