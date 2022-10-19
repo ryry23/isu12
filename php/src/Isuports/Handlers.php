@@ -83,32 +83,9 @@ class Handlers
     /**
      * システム全体で一意なIDを生成する
      */
-    private function dispenseID(): string
+    private function dispenseID(int $tenantId): string
     {
-        $id = 0;
-        /** @var ?\Exception $lastErr */
-        $lastErr = null;
-        for ($i = 0; $i < 100; $i++) {
-            try {
-                $this->adminDB->prepare('REPLACE INTO id_generator (stub) VALUES (?);')
-                    ->executeStatement(['a']);
-            } catch (DBException $e) {
-                if ($e->getCode() === 1213) { // deadlock
-                    $lastErr = $e;
-                    continue;
-                }
-                throw $e;
-            }
-
-            $id = $this->adminDB->lastInsertId();
-            break;
-        }
-
-        if ($id !== 0) {
-            return sprintf('%x', $id);
-        }
-
-        throw $lastErr;
+        return $tenantId . uniqid();
     }
 
     /**
@@ -546,7 +523,7 @@ class Handlers
         /** @var list<PlayerDetail> $pds */
         $pds = [];
         foreach ($displayNames as $displayName) {
-            $id = $this->dispenseID();
+            $id = $this->dispenseID($v->tenantID);
 
             $now = time();
             $tenantDB->prepare('INSERT INTO player (id, tenant_id, display_name, is_disqualified, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)')
@@ -621,7 +598,7 @@ class Handlers
         $title = $request->getParsedBody()['title'] ?? '';
 
         $now = time();
-        $id = $this->dispenseID();
+        $id = $this->dispenseID($v->tenantID);
 
         $tenantDB->prepare('INSERT INTO competition (id, tenant_id, title, finished_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)')
             ->executeStatement([$id, $v->tenantID, $title, null, $now, $now]);
@@ -742,7 +719,7 @@ class Handlers
                     throw new HttpBadRequestException($request, sprintf('player not found: %s', $playerID));
                 }
 
-                $id = $this->dispenseID();
+                $id = $this->dispenseID($v->tenantID);
                 $score = filter_var($scoreStr, FILTER_VALIDATE_INT);
                 if (!is_int($score)) {
                     throw new HttpBadRequestException($request, sprintf('error filter_var: scoreStr=%s', $scoreStr));
