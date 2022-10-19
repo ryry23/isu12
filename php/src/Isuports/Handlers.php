@@ -954,8 +954,8 @@ class Handlers
             throw new RuntimeException(sprintf('error Select tenant: id=%d', $v->tenantID));
         }
 
-        $this->adminDB->prepare('INSERT INTO visit_history (player_id, tenant_id, competition_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?)')
-            ->executeStatement([$v->playerID, $tenant['id'], $competitionID, $now, $now]);
+        $this->adminDB->prepare('INSERT INTO visit_history (player_id, tenant_id, competition_id, created_at) VALUES (?, ?, ?, ?)')
+            ->executeStatement([$v->playerID, $tenant['id'], $competitionID, $now]);
 
         $rankAfter = 0;
         $rankAfterStr = $request->getQueryParams()['rank_after'] ?? '';
