@@ -956,8 +956,8 @@ class Handlers
 
         $existRecord = $this->adminDB->prepare('SELECT count(1) FROM visit_history WHERE player_id = ? AND tenant_id = ? AND competition_id = ?')
             ->executeQuery([$v->playerID, $tenant['id'], $competitionID])
-            ->fetchAllAssociative();
-        if (empty($existRecord)) {
+            ->fetchAllNumeric();
+        if ($existRecord === 0) {
             $this->adminDB->prepare('INSERT INTO visit_history (player_id, tenant_id, competition_id, created_at) VALUES (?, ?, ?, ?)')
                 ->executeStatement([$v->playerID, $tenant['id'], $competitionID, $now]);
         }
