@@ -398,8 +398,6 @@ class Handlers
             $visitorCount =  $counts['visitor'] ?? 0;
         }
 
-        fclose($fl);
-
         return new BillingReport(
             competitionID: $comp->id,
             competitionTitle: $comp->title,
@@ -776,7 +774,6 @@ class Handlers
         }
 
         $tenantDB->close();
-        fclose($fl);
 
         return $this->jsonResponse($response, new SuccessResult(
             success: true,
@@ -893,7 +890,6 @@ class Handlers
         );
 
         $tenantDB->close();
-        fclose($fl);
 
         return $this->jsonResponse($response, $res);
     }
@@ -1015,7 +1011,6 @@ class Handlers
         );
 
         $tenantDB->close();
-        fclose($fl);
 
         return $this->jsonResponse($response, $res);
     }
