@@ -30,3 +30,9 @@ CREATE TABLE player_score (
   created_at BIGINT NOT NULL,
   updated_at BIGINT NOT NULL
 );
+
+create index tenant_id on competition(tenant_id);
+create index id on competition(id);
+create index player_seach on player(tenant_id, created_at);
+create index player_id on player(id);
+create index search on player_score(tenant_id,competition_id, player_id);
