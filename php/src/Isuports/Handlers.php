@@ -958,8 +958,15 @@ class Handlers
         #    ->executeQuery([$v->playerID, $tenant['id'], $competitionID])
         #    ->fetchAllNumeric();
         #if ($existRecord) {
+        try {
             $this->adminDB->prepare('INSERT INTO visit_history (player_id, tenant_id, competition_id, created_at) VALUES (?, ?, ?, ?)')
                 ->executeStatement([$v->playerID, $tenant['id'], $competitionID, $now]);
+        } catch (\Throwable $exception) {
+            if ($exception->getCode() !== 1062) {
+                throw $exception;
+            }
+        }
+
         #}
 
         $rankAfter = 0;
