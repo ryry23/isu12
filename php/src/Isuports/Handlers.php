@@ -286,24 +286,6 @@ class Handlers
     }
 
     /**
-     * 排他ロックする
-     *
-     * @return resource
-     */
-    private function flockByTenantID(int $tenantID): mixed
-    {
-        $p = $this->lockFilePath($tenantID);
-
-        /** @var resource $fl */
-        $fl = fopen($p, 'w+');
-        if (flock($fl, LOCK_EX) === false) {
-            throw new RuntimeException(sprintf('error flock.Lock: path=%s', $p));
-        }
-
-        return $fl;
-    }
-
-    /**
      * SasS管理者用API
      * テナントを追加する
      * POST /api/admin/tenants/add
@@ -396,9 +378,7 @@ class Handlers
             $billingMap[$vh['player_id']] = 'visitor';
         }
 
-        // player_scoreを読んでいるときに更新が走ると不整合が起こるのでロックを取得する
-        $fl = $this->flockByTenantID($tenantID);
-
+        $tenantDB->beginTransaction();
         // スコアを登録した参加者のIDを取得する
         $scoredPlayerIDs = $tenantDB->prepare('SELECT DISTINCT(player_id) FROM player_score WHERE tenant_id = ? AND competition_id = ?')
             ->executeQuery([$tenantID, $comp->id])
@@ -407,6 +387,7 @@ class Handlers
             // スコアが登録されている参加者
             $billingMap[$pid] = 'player';
         }
+        $tenantDB->commit();
 
         // 大会が終了している場合のみ請求金額が確定するので計算する
         $playerCount = 0;
@@ -747,9 +728,6 @@ class Handlers
                 throw new HttpBadRequestException($request, 'invalid CSV headers');
             }
 
-            // / DELETEしたタイミングで参照が来ると空っぽのランキングになるのでロックする
-            $fl = $this->flockByTenantID($v->tenantID);
-
             $rowNum = 0;
             /** @var list<array<string, mixed>> $playerScoreRows */
             $playerScoreRows = [];
@@ -875,9 +853,6 @@ class Handlers
             ->executeQuery([$v->tenantID])
             ->fetchAllAssociative();
 
-        // player_scoreを読んでいるときに更新が走ると不整合が起こるのでロックを取得する
-        $fl = $this->flockByTenantID($v->tenantID);
-
         $pss = [];
         foreach ($cs as $c) {
             $ps = $tenantDB->prepare('SELECT * FROM player_score WHERE tenant_id = ? AND competition_id = ? AND player_id = ? ORDER BY row_num DESC LIMIT 1')
@@ -977,9 +952,6 @@ class Handlers
                 throw new RuntimeException(sprintf('error filter_var: rankAfterStr=%s', $rankAfterStr));
             }
         }
-
-        // player_scoreを読んでいるときに更新が走ると不整合が起こるのでロックを取得する
-        $fl = $this->flockByTenantID($v->tenantID);
 
         $pss = $tenantDB->prepare('SELECT * FROM player_score WHERE tenant_id = ? AND competition_id = ? ORDER BY row_num DESC')
             ->executeQuery([$tenant['id'], $competitionID])
