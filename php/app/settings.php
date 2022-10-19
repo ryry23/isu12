@@ -18,7 +18,7 @@ return function (ContainerBuilder $containerBuilder) {
                 'logErrorDetails'     => true,
                 'logger' => [
                     'name' => 'isuports',
-                    'path' => '/home/isucon/tmp/php/app.log',
+                    'path' => 'php://stdout',
                     'level' => Logger::DEBUG,
                 ],
                 'database' => [
